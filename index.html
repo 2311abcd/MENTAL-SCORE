@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Digital Wellbeing Check-In</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="page">
+
+  <header class="masthead">
+    <div class="masthead__mark" aria-hidden="true">
+      <svg viewBox="0 0 48 48" width="30" height="30">
+        <path d="M24 4 C13 4 4 13 4 24 C4 35 13 44 24 44 C35 44 44 35 44 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="24" cy="24" r="6" fill="currentColor"/>
+      </svg>
+    </div>
+    <div class="masthead__text">
+      <h1>Digital Wellbeing Check-In</h1>
+      <p>A short check-in on your habits online and off, scored by a model trained on student survey data.</p>
+    </div>
+  </header>
+
+  <main class="layout">
+
+    <!-- FORM -->
+    <form id="predict-form" class="panel form-panel" novalidate>
+
+      <fieldset class="group">
+        <legend>About you</legend>
+        <div class="grid grid--3">
+          <div class="field">
+            <label for="age">Age</label>
+            <input type="number" id="age" name="age" min="10" max="100" step="1" placeholder="21" required />
+            <span class="field__hint">10–100</span>
+            <span class="field__error" id="err-age"></span>
+          </div>
+          <div class="field">
+            <label for="gender">Gender</label>
+            <select id="gender" name="gender" required>
+              <option value="" disabled selected>Choose one</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+            <span class="field__error" id="err-gender"></span>
+          </div>
+          <div class="field">
+            <label for="country">Country</label>
+            <input type="text" id="country" name="country" list="country-list" placeholder="India" autocomplete="off" required />
+            <datalist id="country-list">
+              <option value="India"></option>
+              <option value="USA"></option>
+              <option value="Canada"></option>
+              <option value="Australia"></option>
+              <option value="UK"></option>
+              <option value="Germany"></option>
+              <option value="Mexico"></option>
+              <option value="Turkey"></option>
+              <option value="France"></option>
+              <option value="Other"></option>
+            </datalist>
+            <span class="field__hint">Type any country — unlisted ones are grouped as "Other"</span>
+            <span class="field__error" id="err-country"></span>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="group">
+        <legend>Study &amp; platform</legend>
+        <div class="grid grid--2">
+          <div class="field">
+            <label for="academic_Level">Academic level</label>
+            <select id="academic_Level" name="academic_Level" required>
+              <option value="" disabled selected>Choose one</option>
+              <option value="High School">High School</option>
+              <option value="Undergraduate">Undergraduate</option>
+              <option value="Graduate">Graduate</option>
+            </select>
+            <span class="field__error" id="err-academic_Level"></span>
+          </div>
+          <div class="field">
+            <label for="most_Used_Platform">Most-used platform</label>
+            <select id="most_Used_Platform" name="most_Used_Platform" required>
+              <option value="" disabled selected>Choose one</option>
+              <option>Facebook</option>
+              <option>LinkedIn</option>
+              <option>Instagram</option>
+              <option>Snapchat</option>
+              <option>Twitter</option>
+              <option>YouTube</option>
+              <option>TikTok</option>
+              <option>LINE</option>
+              <option>KakaoTalk</option>
+              <option>VKontakte</option>
+              <option>WhatsApp</option>
+              <option>WeChat</option>
+            </select>
+            <span class="field__error" id="err-most_Used_Platform"></span>
+          </div>
+          <div class="field">
+            <label for="purpose_Of_Use">Main purpose of use</label>
+            <select id="purpose_Of_Use" name="purpose_Of_Use" required>
+              <option value="" disabled selected>Choose one</option>
+              <option>Networking</option>
+              <option>Education</option>
+              <option>Entertainment</option>
+              <option>News</option>
+            </select>
+            <span class="field__error" id="err-purpose_Of_Use"></span>
+          </div>
+          <div class="field">
+            <label for="stress_Level">Current stress level</label>
+            <select id="stress_Level" name="stress_Level" required>
+              <option value="" disabled selected>Choose one</option>
+              <option>Low</option>
+              <option>Medium</option>
+              <option>High</option>
+              <option>Very High</option>
+            </select>
+            <span class="field__error" id="err-stress_Level"></span>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="group">
+        <legend>Daily rhythm</legend>
+        <div class="grid grid--2">
+          <div class="field">
+            <label for="avg_Daily_Usage_Hours">Avg. daily screen time <span class="unit">hrs</span></label>
+            <input type="number" id="avg_Daily_Usage_Hours" name="avg_Daily_Usage_Hours" min="0" max="24" step="0.1" placeholder="4.5" required />
+            <span class="field__error" id="err-avg_Daily_Usage_Hours"></span>
+          </div>
+          <div class="field">
+            <label for="daily_Unlocks">Phone unlocks <span class="unit">per day</span></label>
+            <input type="number" id="daily_Unlocks" name="daily_Unlocks" min="0" step="1" placeholder="60" required />
+            <span class="field__error" id="err-daily_Unlocks"></span>
+          </div>
+          <div class="field">
+            <label for="study_Hours">Study time <span class="unit">hrs</span></label>
+            <input type="number" id="study_Hours" name="study_Hours" min="0" max="24" step="0.1" placeholder="3" required />
+            <span class="field__error" id="err-study_Hours"></span>
+          </div>
+          <div class="field">
+            <label for="physical_Activity_Hours">Physical activity <span class="unit">hrs</span></label>
+            <input type="number" id="physical_Activity_Hours" name="physical_Activity_Hours" min="0" max="24" step="0.1" placeholder="1" required />
+            <span class="field__error" id="err-physical_Activity_Hours"></span>
+          </div>
+          <div class="field">
+            <label for="sleep_Hours_Per_Night">Sleep <span class="unit">hrs / night</span></label>
+            <input type="number" id="sleep_Hours_Per_Night" name="sleep_Hours_Per_Night" min="0" max="24" step="0.1" placeholder="7" required />
+            <span class="field__error" id="err-sleep_Hours_Per_Night"></span>
+          </div>
+        </div>
+      </fieldset>
+
+      <div class="form-panel__footer">
+        <p class="disclaimer">This is a statistical estimate for a class project, not a clinical assessment.</p>
+        <button type="submit" id="submit-btn" class="btn-primary">
+          <span class="btn-primary__label">Get my score</span>
+          <span class="btn-primary__spinner" aria-hidden="true"></span>
+        </button>
+      </div>
+
+      <p class="api-error" id="api-error" role="alert" hidden></p>
+    </form>
+
+    <!-- RESULT -->
+    <aside class="panel result-panel" id="result-panel" aria-live="polite">
+
+      <div class="result-state result-state--idle" id="state-idle">
+        <div class="idle-dial" aria-hidden="true">
+          <svg viewBox="0 0 120 120">
+            <circle cx="60" cy="60" r="52" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="4 7" />
+          </svg>
+        </div>
+        <p>Fill in the form and submit to see your estimated mental health score.</p>
+      </div>
+
+      <div class="result-state result-state--loading" id="state-loading" hidden>
+        <div class="pulse-dial" aria-hidden="true"></div>
+        <p>Scoring your responses…</p>
+      </div>
+
+      <div class="result-state result-state--error" id="state-error" hidden>
+        <div class="error-mark" aria-hidden="true">!</div>
+        <p id="error-message">Something went wrong.</p>
+        <button type="button" class="btn-secondary" id="retry-btn">Try again</button>
+      </div>
+
+      <div class="result-state result-state--done" id="state-done" hidden>
+        <p class="result-eyebrow">Estimated score</p>
+        <div class="gauge" id="gauge">
+          <svg viewBox="0 0 200 120" class="gauge__svg">
+            <path d="M20 110 A80 80 0 0 1 180 110" fill="none" stroke="var(--line)" stroke-width="14" stroke-linecap="round"/>
+            <path id="gauge-fill" d="M20 110 A80 80 0 0 1 180 110" fill="none" stroke="var(--accent)" stroke-width="14" stroke-linecap="round" stroke-dasharray="251.2" stroke-dashoffset="251.2"/>
+          </svg>
+          <div class="gauge__value" id="gauge-value">0.0</div>
+        </div>
+        <p class="result-label" id="result-label">—</p>
+        <p class="result-copy" id="result-copy"></p>
+        <button type="button" class="btn-secondary" id="reset-btn">Check another profile</button>
+      </div>
+
+    </aside>
+
+  </main>
+
+  <footer class="foot">
+    <p>Connects to your local API at <code>http://127.0.0.1:8000/predict</code></p>
+  </footer>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
