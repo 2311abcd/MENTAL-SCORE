@@ -3,13 +3,15 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Digital Wellbeing Check-In</title>
+<title>Mental-Health-Score-Prediction</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+
+<canvas id="starfield" aria-hidden="true"></canvas>
 
 <div class="page">
 
@@ -21,7 +23,7 @@
       </svg>
     </div>
     <div class="masthead__text">
-      <h1>Digital Wellbeing Check-In</h1>
+      <h1>Mental-Health-Score-Predictor</h1>
       <p>A short check-in on your habits online and off, scored by a model trained on student survey data.</p>
     </div>
   </header>
@@ -187,8 +189,6 @@
       </div>
 
       <div class="result-state result-state--error" id="state-error" hidden>
-        <div class="error-mark" aria-hidden="true">!</div>
-        <p id="error-message">Something went wrong.</p>
         <button type="button" class="btn-secondary" id="retry-btn">Try again</button>
       </div>
 
@@ -217,5 +217,8 @@
 </div>
 
 <script src="script.js"></script>
+</body>
+</html>
+
 </body>
 </html>
