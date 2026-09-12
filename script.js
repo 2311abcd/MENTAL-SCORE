@@ -205,7 +205,9 @@ form.addEventListener("submit", async (event) => {
     animateGauge(result.predicted_mental_health_score);
     setState("done");
   } catch (err) {
-    errorMessageEl.textContent = err.message || "Something went wrong. Please try again.";
+    if (errorMessageEl) {
+      errorMessageEl.textContent = err.message || "Something went wrong. Please try again.";
+    }
     setState("error");
   } finally {
     submitBtn.disabled = false;
@@ -217,6 +219,93 @@ retryBtn.addEventListener("click", () => {
   form.requestSubmit();
 });
 
+// ---------------------------------------------
+// Animated starfield background
+// ---------------------------------------------
+(function initStarfield() {
+  const canvas = document.getElementById("starfield");
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  let width, height, stars, dpr;
+
+  function makeStars() {
+    const density = 0.00012; // stars per pixel
+    const count = Math.round(width * height * density);
+    stars = new Array(count).fill(0).map(() => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      r: Math.random() * 1.3 + 0.3,
+      baseAlpha: Math.random() * 0.6 + 0.25,
+      twinkleSpeed: Math.random() * 0.015 + 0.005,
+      twinklePhase: Math.random() * Math.PI * 2,
+      driftSpeed: Math.random() * 0.06 + 0.02,
+    }));
+  }
+
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = width * dpr;
+    canvas.height = height * dpr;
+    canvas.style.width = width + "px";
+    canvas.style.height = height + "px";
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    makeStars();
+  }
+
+  function drawStatic() {
+    ctx.clearRect(0, 0, width, height);
+    stars.forEach((s) => {
+      ctx.beginPath();
+      ctx.fillStyle = `rgba(230,235,255,${s.baseAlpha})`;
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fill();
+    });
+  }
+
+  let t = 0;
+  function drawFrame() {
+    t += 1;
+    ctx.clearRect(0, 0, width, height);
+    stars.forEach((s) => {
+      // slow downward-diagonal drift, wrapping around the viewport
+      s.y += s.driftSpeed;
+      s.x += s.driftSpeed * 0.25;
+      if (s.y > height + 2) s.y = -2;
+      if (s.x > width + 2) s.x = -2;
+
+      const twinkle = Math.sin(t * s.twinkleSpeed + s.twinklePhase) * 0.35;
+      const alpha = Math.max(0, Math.min(1, s.baseAlpha + twinkle));
+
+      ctx.beginPath();
+      ctx.fillStyle = `rgba(230,235,255,${alpha})`;
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fill();
+    });
+    requestAnimationFrame(drawFrame);
+  }
+
+  resize();
+  window.addEventListener("resize", resize);
+
+  if (prefersReducedMotion) {
+    drawStatic();
+  } else {
+    requestAnimationFrame(drawFrame);
+  }
+})();
+
 resetBtn.addEventListener("click", () => {
+  form.reset();
+  Object.keys(FIELD_RULES).forEach(clearFieldError);
+  apiErrorBox.hidden = true;
+  gaugeFill.style.strokeDashoffset = GAUGE_CIRCUMFERENCE;
+  gaugeValue.textContent = "0.0";
+  resultLabel.textContent = "—";
+  resultCopy.textContent = "";
   setState("idle");
+  form.querySelector("input, select")?.focus();
 });
